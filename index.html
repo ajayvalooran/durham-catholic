@@ -47,13 +47,21 @@
     <div class="live-indicator" id="status">● Connecting to Live Data...</div>
 </header>
 
-<div class="search-container">
-    <input type="text" id="search" placeholder="Search Parish or City..." onkeyup="filter()">
-    <select id="timeFilter" onchange="filter()">
-        <option value="all">Show All Mass Times</option>
-        <option value="morning">Morning (AM)</option>
-        <option value="evening">Evening (PM)</option>
-    </select>
+<div class="table-container">
+    <table id="mass-table">
+        <thead>
+            <tr>
+                <th>Parish Name</th>
+                <th>City</th>
+                <th>Sunday Mass</th>
+                <th>Good Friday</th>
+                <th>Easter Sunday</th>
+                <th>Links</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            </tbody>
+    </table>
 </div>
 
 <div id="loader" class="loader">Loading Parishes...</div>
