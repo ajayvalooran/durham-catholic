@@ -24,25 +24,29 @@ async function loadData() {
 }
 
 function render(data) {
-    const list = document.getElementById('parish-list');
-    // Using loose matching to handle potential header typos in Google Sheets
-    list.innerHTML = data.map(p => `
-        <div class="card">
-            <div class="city">${p.City || p.city || 'Durham Region'}</div>
-            <div class="name">${p.Name || p.name || p.Parish || 'Catholic Parish'}</div>
-            <div class="time-row"><span class="label">Sunday</span><span class="val">${p.Sunday_Mass || p.Sunday || 'See Website'}</span></div>
-            <div class="time-row"><span class="label">Good Friday</span><span class="val">${p.Good_Friday || '3:00 PM'}</span></div>
-            <div class="easter-row">
-                <div class="time-row" style="border:0; margin:0;">
-                    <span class="label">Easter Sunday</span>
-                    <span class="val" style="color:#d35400">${p.Easter_Sunday || 'TBD'}</span>
+    const tableBody = document.getElementById('table-body');
+    
+    if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No results found</td></tr>';
+        return;
+    }
+
+    tableBody.innerHTML = data.map(p => `
+        <tr>
+            <td><strong>${p.Name || 'N/A'}</strong></td>
+            <td>${p.City || 'Durham'}</td>
+            <td>${p.Sunday_Mass || 'See Bulletin'}</td>
+            <td>${p.Good_Friday || 'TBD'}</td>
+            <td style="background-color: #fff9c4; font-weight: bold; color: #d35400;">
+                ${p.Easter_Sunday || 'TBD'}
+            </td>
+            <td>
+                <div class="table-actions">
+                    <a href="${p.Website || '#'}" target="_blank" title="Bulletin">🔗</a>
+                    <a href="${p.Directions_Link || '#'}" target="_blank" title="Directions">📍</a>
                 </div>
-            </div>
-            <div class="actions">
-                <a href="${p.Website || '#'}" target="_blank" class="btn btn-web">Bulletin</a>
-                <a href="${p.Directions_Link || p.Directions || '#'}" target="_blank" class="btn btn-nav">Directions</a>
-            </div>
-        </div>
+            </td>
+        </tr>
     `).join('');
 }
 
