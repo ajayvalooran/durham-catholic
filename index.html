@@ -59,61 +59,7 @@
 <div id="loader" class="loader">Loading Parishes...</div>
 <div id="parish-list" class="parish-grid"></div>
 
-<script>
-    // REPLACE WITH YOUR STEIN/API URL
-    const API_URL = "https://api.steinhq.com/v1/storages/69c84be8affba40a626b1505/Sheet1";
-
-    let parishData = [];
-
-    async function loadData() {
-        try {
-            const response = await fetch(API_URL);
-            parishData = await response.json();
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('status').innerText = "● Live & Updated: " + new Date().toLocaleTimeString();
-            render(parishData);
-        } catch (err) {
-            document.getElementById('loader').innerText = "Error loading data. Please check connection.";
-        }
-    }
-
-    function render(data) {
-        const list = document.getElementById('parish-list');
-        list.innerHTML = data.map(p => `
-            <div class="card">
-                <div class="city">${p.City}</div>
-                <div class="name">${p.Name}</div>
-                <div class="time-row"><span class="label">Sunday</span><span class="val">${p.Sunday_Mass}</span></div>
-                <div class="time-row"><span class="label">Good Friday</span><span class="val">${p.Good_Friday}</span></div>
-                <div class="easter-row">
-                    <div class="time-row" style="border:0; margin:0;"><span class="label">Easter Sunday</span><span class="val" style="color:#d35400">${p.Easter_Sunday}</span></div>
-                </div>
-                <div class="actions">
-                    <a href="${p.Website}" target="_blank" class="btn btn-web">Bulletin</a>
-                    <a href="${p.Directions_Link}" target="_blank" class="btn btn-nav">Directions</a>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function filter() {
-        const query = document.getElementById('search').value.toLowerCase();
-        const time = document.getElementById('timeFilter').value;
-        
-        const filtered = parishData.filter(p => {
-            const matchesText = p.Name.toLowerCase().includes(query) || p.City.toLowerCase().includes(query);
-            let matchesTime = true;
-            if (time === 'morning') matchesTime = p.Sunday_Mass.includes('AM');
-            if (time === 'evening') matchesTime = p.Sunday_Mass.includes('PM') && (p.Sunday_Mass.includes('5') || p.Sunday_Mass.includes('6') || p.Sunday_Mass.includes('7'));
-            return matchesText && matchesTime;
-        });
-        render(filtered);
-    }
-
-    loadData();
-    // Auto-refresh every 5 minutes to stay live
-    setInterval(loadData, 300000);
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
